@@ -23,36 +23,57 @@ namespace BallSpiel
     {
         private readonly DispatcherTimer _animationTimer = new DispatcherTimer();
         private bool gehtNachRechts = true;
-
+        private bool gehtNachUnten = true;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _animationTimer.Interval = TimeSpan.FromMilliseconds(50);
+            _animationTimer.Interval = TimeSpan.FromMilliseconds(5);
             _animationTimer.Tick += PositioniereBall;
         }
 
         private void PositioniereBall(object sender, EventArgs e)
         {
             var x = Canvas.GetLeft(Ball);
+            var y = Canvas.GetTop(Ball);
 
-            if (gehtNachRechts)
+            if (gehtNachRechts && gehtNachUnten)
             {
-                Canvas.SetLeft(Ball, x + 5);
+                Canvas.SetLeft(Ball, x + 3);
+                Canvas.SetTop(Ball, y + 3);
             }
-            else
+            else if (gehtNachRechts && !gehtNachUnten)
             {
-                Canvas.SetLeft(Ball, x - 5);
+                Canvas.SetLeft(Ball, x + 3);
+                Canvas.SetTop(Ball, y - 3);
+            }
+            else if (!gehtNachRechts && !gehtNachUnten)
+            {
+                Canvas.SetLeft(Ball, x - 3);
+                Canvas.SetTop(Ball, y - 3);
+            }
+            else if (!gehtNachRechts && gehtNachUnten)
+            {
+                Canvas.SetLeft(Ball, x - 3);
+                Canvas.SetTop(Ball, y + 3);
             }
 
             if (x >= Spielplatz.ActualWidth - Ball.ActualWidth)
             {
                 gehtNachRechts = false;
             }
+            else if (y >= Spielplatz.ActualHeight - Ball.ActualHeight)
+            {
+                gehtNachUnten = false;
+            }
             else if (x <= 0)
             {
                 gehtNachRechts = true;
+            }
+            else if (y <= 0)
+            {
+                gehtNachUnten = true;
             }
             
         }
