@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -100,6 +101,42 @@ namespace BallSpiel
             {
                 zaehler += 1;
                 SpielstandLabel.Content = $"{zaehler} Clicks";
+            }
+        }
+
+        private void Ball_KeyUp(object sender, KeyEventArgs e)
+        {         
+            if (e.Key == Key.F)
+            {
+                Ball.Fill = Brushes.Red;
+            }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            var x = Canvas.GetLeft(Ball);
+            var y = Canvas.GetTop(Ball);
+
+            if (x <= Spielplatz.ActualWidth - Ball.ActualWidth && y <= Spielplatz.ActualHeight - Ball.ActualHeight
+                && x >= 0 && y >= 0)
+            {
+                switch (e.Key)
+                {
+                    case Key.Up:
+                        Canvas.SetTop(Ball, y - 10);
+                        break;
+                    case Key.Right:
+                        Canvas.SetLeft(Ball, x + 10);
+                        break;
+                    case Key.Down:
+                        Canvas.SetTop(Ball, y + 10);
+                        break;
+                    case Key.Left:
+                        Canvas.SetLeft(Ball, x - 10);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
